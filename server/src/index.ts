@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { connectDB } from './config/db';
 
+import authRoutes from './routes/auth.routes';
+
 dotenv.config();
 
 const app = express();
@@ -18,6 +20,8 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.get('/api/health', (_req, res) => {
   res.json({ message: 'LMS API running' });
 });
+
+app.use('/api/auth', authRoutes);
 
 // Connect DB + start server
 connectDB().then(() => {
