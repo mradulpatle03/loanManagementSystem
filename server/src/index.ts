@@ -5,6 +5,7 @@ import path from 'path';
 import { connectDB } from './config/db';
 
 import authRoutes from './routes/auth.routes';
+import borrowerRoutes from './routes/borrower.routes';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/borrower', borrowerRoutes);
 
 // Connect DB + start server
 connectDB().then(() => {

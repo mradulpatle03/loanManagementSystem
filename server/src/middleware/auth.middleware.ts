@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
+
 export interface AuthRequest extends Request {
   user?: { _id: string; role: string; email: string };
+  file?: Express.Multer.File; 
 }
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction): void => {
