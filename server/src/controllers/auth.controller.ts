@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { SignOptions } from 'jsonwebtoken';
 import User from '../models/User';
 import { AuthRequest } from '../middleware/auth.middleware';
+import { isValidEmail, isValidPassword } from '../utils/validate';
 
 const signToken = (user: { _id: unknown; role: string; email: string }) =>
   jwt.sign(
@@ -16,6 +17,14 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
       res.status(400).json({ message: 'Name, email and password are required' });
+      return;
+    }
+     if (!isValidEmail(email)) {
+      res.status(400).json({ message: 'Invalid email format' });
+      return;
+    }
+    if (!isValidPassword(password)) {
+      res.status(400).json({ message: 'Password must be at least 6 characters' });
       return;
     }
     const existing = await User.findOne({ email });

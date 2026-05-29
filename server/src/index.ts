@@ -11,6 +11,8 @@ import sanctionRoutes from './routes/sanction.routes';
 import disbursementRoutes from './routes/disbursement.routes';
 import collectionRoutes from './routes/collection.routes';
 
+import { errorHandler, notFound } from './middleware/error.middleware';
+
 dotenv.config();
 
 const app = express();
@@ -32,6 +34,9 @@ app.use('/api/sales', salesRoutes);
 app.use('/api/sanction', sanctionRoutes);
 app.use('/api/disbursement', disbursementRoutes);
 app.use('/api/collection', collectionRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 // Connect DB + start server
 connectDB().then(() => {
