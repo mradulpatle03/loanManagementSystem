@@ -9,7 +9,7 @@ export const getLeads = async (req: AuthRequest, res: Response): Promise<void> =
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const skip = (page - 1) * limit;
-
+    const sortDir = req.query.sort === 'asc' ? 1 : -1;
     // Find borrowers who have NO active/applied loan
     const borrowersWithLoans = await Loan.distinct('borrowerId', {
       status: { $in: ['applied', 'sanctioned', 'disbursed', 'closed'] },
@@ -21,7 +21,7 @@ export const getLeads = async (req: AuthRequest, res: Response): Promise<void> =
         _id: { $nin: borrowersWithLoans },
       })
         .select('-password')
-        .sort({ createdAt: -1 })
+        .sort({ createdAt: sortDir })
         .skip(skip)
         .limit(limit),
       User.countDocuments({
