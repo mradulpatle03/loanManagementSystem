@@ -14,6 +14,8 @@ import collectionRoutes from './routes/collection.routes';
 import { errorHandler, notFound } from './middleware/error.middleware';
 
 dotenv.config();
+import { validateEnv } from './config/env';
+validateEnv();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
